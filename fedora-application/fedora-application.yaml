@@ -1,0 +1,44 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: application
+spec:
+  finalizers:
+  - kubernetes
+---
+# Need SETFCAP to install specific RPMs like iputils
+# Need CAP_NET_RAW and CAP_NET_ADMIN for tcpdump and iproute tools
+# https://github.com/containers/podman/issues/5364
+# oc adm policy add-scc-to-user privileged -z default
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fedora-deployment
+  namespace: application
+  labels:
+    app: fedora-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: fedora-pod
+  template:
+    metadata:
+      labels:
+        app: fedora-pod
+    spec:
+      containers:
+      - name: fedora
+        image: fedora-application
+        command:
+          - sleep
+          - infinity
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          runAsUser: 0
+          capabilities:
+            add:
+              - "SETFCAP"
+              - "NET_RAW"
+              - "NET_ADMIN"
