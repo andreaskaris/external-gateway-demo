@@ -9,6 +9,12 @@ run:
 exec:
 	docker exec -it $(container) /bin/bash
 
+get-ip:
+	docker exec -it $(container) /bin/bash -c "ip a ls dev eth0"
+
+get-neighbor-table:
+	docker exec -it $(container) /bin/bash -c "ip r; ip neigh"
+
 delete:
 	docker stop $(container)
 	docker rm $(container)
