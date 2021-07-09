@@ -33,4 +33,4 @@ spec:
           - sleep
           - infinity
       nodeSelector:
-        kubernetes.io/hostname: ovn-worker2
+        kubernetes.io/hostname: ovn-worker
