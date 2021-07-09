@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 for pod in $(oc get pods -n ovn-kubernetes -l name=ovnkube-master -o name); do
 	echo "Routers are:"
