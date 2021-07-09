@@ -1,0 +1,36 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gateway
+spec:
+  finalizers:
+  - kubernetes
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-gateway
+  namespace: gateway
+  labels:
+    app: external-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: external-gateway
+  template:
+    metadata:
+      labels:
+        app: external-gateway
+    spec:
+      hostNetwork: true
+      containers:
+      - name: external-gateway
+        image: fedora-application
+        imagePullPolicy: IfNotPresent
+        command:
+          - sleep
+          - infinity
+      nodeSelector:
+        kubernetes.io/hostname: ovn-worker2
