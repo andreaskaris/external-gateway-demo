@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 for pod in $(oc get pods -n openshift-ovn-kubernetes -l app=ovnkube-master -o name); do
-	oc exec -n openshift-ovn-kubernetes -it -c northd $pod -- ovn-nbctl lr-list
+	oc exec -n openshift-ovn-kubernetes -it -c northd $pod -- ovn-nbctl lr-list >/dev/null 2>&1
 	if [ "$?" == "0" ]; then
 		echo "Routers are:"
 		oc exec -n openshift-ovn-kubernetes -it -c northd $pod -- ovn-nbctl lr-list
